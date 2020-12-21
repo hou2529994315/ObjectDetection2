@@ -13,6 +13,13 @@ using namespace cv;
 typedef pcl::PointXYZRGB PointT;
 typedef pcl::PointCloud<PointT> PointCloudT;
 
+struct Cube {
+	int count;
+	std::vector<std::vector<float>> w_h_d;
+	std::vector<Eigen::Quaternionf> rotat;
+	std::vector<Eigen::Vector3f> translat;
+};
+
 class CaptureThread : public QThread
 {
 	Q_OBJECT
@@ -23,11 +30,17 @@ public:
 	bool enableCapture = false;
 	bool enableDetection = false;
 	bool enableSave = false;
+	
 
 	pcl::PointCloud<PointT>::Ptr getCloud();
 	void captureOnePCD() 
 	{
 		enableSave = true;
+	}
+	
+	Cube getCube() 
+	{
+		return cube;
 	}
 private:
 	IKinectSensor* pSensor;
@@ -42,6 +55,7 @@ private:
 	bool exit = false;
 	pcl::PointCloud<PointT>::Ptr cloud;
 	bool initKinect();
+	Cube cube;
 
 	Mat depthData();
 	Mat RGBData();

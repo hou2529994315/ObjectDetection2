@@ -46,6 +46,10 @@ public:
 		captureThread->captureOnePCD();
 	}
 
+	Cube getCube() {
+		return captureThread->getCube();
+	}
+
 	pcl::PointCloud<PointT>::Ptr getCloud()
 	{
 		return cloud;

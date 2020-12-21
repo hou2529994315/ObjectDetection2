@@ -1,5 +1,6 @@
 #include "CaptureThread.h"
-
+#include "Filter.h"
+#include "Detect.h"
 #include<pcl/io/io.h>
 #include<pcl/io/pcd_io.h>//pcd 读写类相关的头文件。
 #include<string>
@@ -25,7 +26,7 @@ void CaptureThread::run()
 	msleep(5000);
 	qDebug() << "预热完成" << endl;
 
-	char strfilepath[256] = "cloud3.pcd";
+	char strfilepath[256] = "cloud5.pcd";
 	while (!exit) {
 		//msleep(500);
 		if (enableCapture == true) {
@@ -37,7 +38,22 @@ void CaptureThread::run()
 			//capture();
 
 			if (enableDetection == true) {
-				//qDebug() << u8"检测" << endl;
+				PointCloudT::Ptr cloud_temp(new PointCloudT);
+				pcl::copyPointCloud(*cloud, *cloud_temp);
+
+				//点云预处理
+				Filter filter;
+				filter.passThroughFilter(cloud_temp);
+				filter.voxelGridFilter(cloud_temp);
+				filter.statisticalFilter(cloud_temp);
+
+				//检测
+				Detect detect;
+				PointCloudT::Ptr cloud_plane = detect.detectPlain(cloud_temp);//分割地面
+				cube.count = detect.detectObject(cloud_temp);//提取物体,num为物体数量
+				cube.w_h_d = detect.getWHD();
+				cube.rotat = detect.getRotat();// a quaternion-based rotation to apply to the cube
+				cube.translat = detect.getTranslat();// a translation to apply to the cube from 0,0,0	
 			}
 			else {
 				//qDebug() << "不检测" << endl;

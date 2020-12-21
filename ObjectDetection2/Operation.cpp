@@ -11,7 +11,7 @@ Operation::Operation()
 }
 Operation::~Operation()
 {
-
+	delete captureThread;
 }
 
 void Operation::initializationData() 

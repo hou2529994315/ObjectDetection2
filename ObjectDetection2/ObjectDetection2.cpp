@@ -52,6 +52,18 @@ void ObjectDetection2::mySlot()
 	viewer->removeAllPointClouds();
 	viewer->removeAllShapes();
 	viewer->addPointCloud(cloud, "cloud");
+
+	Cube cube = operation->getCube();
+	for (int i = 0; i < cube.count; i++)
+	{
+		std::stringstream ss;
+		ss << "cloud_cluster_" << i;
+		viewer->addCube(cube.translat[i], cube.rotat[i], cube.w_h_d[i][0], cube.w_h_d[i][1], cube.w_h_d[i][2], ss.str());
+		viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_REPRESENTATION, pcl::visualization::PCL_VISUALIZER_REPRESENTATION_WIREFRAME, ss.str());
+		viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 1.0, 0.0, 0.0, ss.str());
+	}
+
+
 	ui->qvtkWidget->update();
 	qDebug() << "刷新窗口" << endl;
 }
