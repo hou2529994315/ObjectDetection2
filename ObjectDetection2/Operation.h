@@ -41,6 +41,11 @@ public:
 	void stopCapture();
 	void startDetection();
 	void stopDetection();
+	void saveOne()
+	{
+		captureThread->captureOnePCD();
+	}
+
 	pcl::PointCloud<PointT>::Ptr getCloud()
 	{
 		return cloud;

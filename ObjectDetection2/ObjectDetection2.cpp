@@ -19,6 +19,7 @@ ObjectDetection2::ObjectDetection2(QWidget *parent)
 	connect(ui->actionStop, &QAction::triggered, this, &ObjectDetection2::stopCapture);
 	connect(ui->actionStartDetection, &QAction::triggered, this, &ObjectDetection2::startDetection);
 	connect(ui->actionStopDetection, &QAction::triggered, this, &ObjectDetection2::stopDetection);
+	connect(ui->actionSave, &QAction::triggered, this, &ObjectDetection2::saveOne);
 
 
 	//刷新图像
@@ -53,4 +54,9 @@ void ObjectDetection2::mySlot()
 	viewer->addPointCloud(cloud, "cloud");
 	ui->qvtkWidget->update();
 	qDebug() << "刷新窗口" << endl;
+}
+
+void ObjectDetection2::saveOne() 
+{
+	operation->saveOne();
 }

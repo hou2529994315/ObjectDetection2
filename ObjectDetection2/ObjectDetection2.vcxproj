@@ -40,6 +40,8 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\ObjectDetection\ObjectDetection\pcl_10.props" />
     <Import Project="..\..\ObjectDetection\ObjectDetection\vtk_82.props" />
+    <Import Project="..\..\ObjectDetection\ObjectDetection\ObjectDetection\kinect_v2.props" />
+    <Import Project="..\..\scar_project2.0\scar_project2.0\OpenCVRelease64.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">

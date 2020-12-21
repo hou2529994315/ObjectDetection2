@@ -53,6 +53,7 @@ private slots:
     void stopCapture();
     void startDetection();
     void stopDetection();
+    void saveOne();
 
     void mySlot();
 
