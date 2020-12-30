@@ -45,6 +45,7 @@ PointCloudT::Ptr Detect::detectPlain(PointCloudT::Ptr& cloud)
 	return cloud_plane;
 }
 
+//欧式聚类进行检测，并生成最小包围盒
 int Detect::detectObject(PointCloudT::Ptr& cloud)
 {
 	// 使用kdtree提取物体
@@ -75,7 +76,10 @@ int Detect::detectObject(PointCloudT::Ptr& cloud)
 	return cluster_indices.size();
 }
 
-
+/// <summary>
+/// 计算输入点云的最小包围盒
+/// </summary>
+/// <param name="cloud"></param>
 void Detect::bbox(PointCloudT::Ptr cloud)
 {
 

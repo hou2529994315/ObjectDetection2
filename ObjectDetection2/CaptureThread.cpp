@@ -5,6 +5,7 @@
 #include<pcl/io/pcd_io.h>//pcd 读写类相关的头文件。
 #include<string>
 #include <QDebug>
+#include <QTime>
 
 CaptureThread::CaptureThread()
 {
@@ -31,11 +32,14 @@ void CaptureThread::run()
 		//msleep(500);
 		if (enableCapture == true) {
 			
+			QTime t;
+			t.start();
 			if (-1 == pcl::io::loadPCDFile(strfilepath, *cloud)) {
 				qDebug() << u8"读取失败" << endl;
 				continue;
 			}
 			//capture();
+			qDebug() << u8"读取：" << t.restart() / 1000 << "s" << endl;
 
 			if (enableDetection == true) {
 				PointCloudT::Ptr cloud_temp(new PointCloudT);
@@ -43,17 +47,20 @@ void CaptureThread::run()
 
 				//点云预处理
 				Filter filter;
-				filter.passThroughFilter(cloud_temp);
-				filter.voxelGridFilter(cloud_temp);
-				filter.statisticalFilter(cloud_temp);
+				filter.passThroughFilter(cloud_temp);//直通滤波
+				filter.voxelGridFilter(cloud_temp);//体素滤波
+				filter.statisticalFilter(cloud_temp);//统计滤波
+
+				qDebug() << "预处理：" << t.restart()/1000 << "s" << endl;
 
 				//检测
 				Detect detect;
 				PointCloudT::Ptr cloud_plane = detect.detectPlain(cloud_temp);//分割地面
-				cube.count = detect.detectObject(cloud_temp);//提取物体,num为物体数量
+				cube.count = detect.detectObject(cloud_temp);//提取物体,count为物体数量
 				cube.w_h_d = detect.getWHD();
 				cube.rotat = detect.getRotat();// a quaternion-based rotation to apply to the cube
-				cube.translat = detect.getTranslat();// a translation to apply to the cube from 0,0,0	
+				cube.translat = detect.getTranslat();// a translation to apply to the cube from 0,0,0
+				qDebug() << "检测：" << t.restart() / 1000 << "s" << endl;
 			}
 			else {
 				//qDebug() << "不检测" << endl;

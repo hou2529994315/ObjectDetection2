@@ -65,7 +65,7 @@ void ObjectDetection2::mySlot()
 
 
 	ui->qvtkWidget->update();
-	qDebug() << "刷新窗口" << endl;
+	//qDebug() << "刷新窗口" << endl;
 }
 
 void ObjectDetection2::saveOne() 
