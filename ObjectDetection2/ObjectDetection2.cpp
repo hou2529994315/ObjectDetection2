@@ -5,8 +5,8 @@ ObjectDetection2::ObjectDetection2(QWidget *parent)
 {
     ui->setupUi(this);
 
-	thread->start();
-	operation->moveToThread(thread);
+	//thread->start();
+	//operation->moveToThread(thread);
 
 	//Initialize the QVTK window
 	viewer.reset(new pcl::visualization::PCLVisualizer("viewer", false));

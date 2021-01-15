@@ -6,6 +6,9 @@
 
 void Filter::passThroughFilter(PointCloudT::Ptr& cloud)
 {
+	if (cloud == nullptr)
+		return;
+
 	std::cerr << "Cloud before filtering: " << cloud->points.size() << std::endl;
 	pcl::PassThrough<pcl::PointXYZRGB> pass;//设置滤波器对象
 	pass.setInputCloud(cloud);//设置输入点云
@@ -23,6 +26,9 @@ void Filter::passThroughFilter(PointCloudT::Ptr& cloud)
 
 void Filter::voxelGridFilter(PointCloudT::Ptr& cloud)
 {
+	if (cloud == nullptr)
+		return;
+
 	/******************************************************************************
 			创建一个叶大小为1cm的pcl::VoxelGrid滤波器，
 	**********************************************************************************/
@@ -38,6 +44,8 @@ void Filter::voxelGridFilter(PointCloudT::Ptr& cloud)
 
 void Filter::statisticalFilter(PointCloudT::Ptr& cloud)
 {
+	if (cloud == nullptr)
+		return;
 	// 创建滤波器，对每个点分析的临近点的个数设置为50 ，并将标准差的倍数设置为1  这意味着如果一
   //个点的距离超出了平均距离一个标准差以上，则该点被标记为离群点，并将它移除，存储起来
 	pcl::StatisticalOutlierRemoval<pcl::PointXYZRGB> sor;   //创建滤波器对象

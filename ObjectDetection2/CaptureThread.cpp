@@ -34,12 +34,12 @@ void CaptureThread::run()
 			
 			QTime t;
 			t.start();
-			if (-1 == pcl::io::loadPCDFile(strfilepath, *cloud)) {
+			/*if (-1 == pcl::io::loadPCDFile(strfilepath, *cloud)) {
 				qDebug() << u8"读取失败" << endl;
 				continue;
-			}
-			//capture();
-			qDebug() << u8"读取：" << t.restart() / 1000 << "s" << endl;
+			}*/
+			capture();
+			qDebug() << u8"读取：" << t.restart()<< endl;
 
 			if (enableDetection == true) {
 				PointCloudT::Ptr cloud_temp(new PointCloudT);
@@ -51,16 +51,20 @@ void CaptureThread::run()
 				filter.voxelGridFilter(cloud_temp);//体素滤波
 				filter.statisticalFilter(cloud_temp);//统计滤波
 
-				qDebug() << "预处理：" << t.restart()/1000 << "s" << endl;
+				qDebug() << "预处理：" << t.restart() << endl;
 
-				//检测
-				Detect detect;
-				PointCloudT::Ptr cloud_plane = detect.detectPlain(cloud_temp);//分割地面
-				cube.count = detect.detectObject(cloud_temp);//提取物体,count为物体数量
-				cube.w_h_d = detect.getWHD();
-				cube.rotat = detect.getRotat();// a quaternion-based rotation to apply to the cube
-				cube.translat = detect.getTranslat();// a translation to apply to the cube from 0,0,0
-				qDebug() << "检测：" << t.restart() / 1000 << "s" << endl;
+				if (cloud_temp != nullptr)
+				{
+					//检测
+					Detect detect;
+					PointCloudT::Ptr cloud_plane = detect.detectPlain(cloud_temp);//分割地面
+					cube.count = detect.detectObject(cloud_temp);//提取物体,count为物体数量
+					cube.w_h_d = detect.getWHD();
+					cube.rotat = detect.getRotat();// a quaternion-based rotation to apply to the cube
+					cube.translat = detect.getTranslat();// a translation to apply to the cube from 0,0,0
+					qDebug() << "检测：" << t.restart() << endl;
+				}
+					
 			}
 			else {
 				//qDebug() << "不检测" << endl;
